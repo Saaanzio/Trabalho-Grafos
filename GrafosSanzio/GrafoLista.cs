@@ -17,6 +17,7 @@ namespace GrafosSanzio
                 listaAdj[i] = new List<Aresta>();
             }
         }
+
         public GrafoLista(int vertices, List<List<int>> dimic)
         {
             listaAdj = new List<Aresta>[vertices];
