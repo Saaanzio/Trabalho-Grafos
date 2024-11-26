@@ -10,6 +10,7 @@ namespace GrafosSanzio
     {
         static void Main(string[] args)
         {
+            //main nao funciona - main novo sera feito
             Grafo grafo = new Grafo();
             Console.WriteLine("Insira o vertice / -1 para sair");
             int vertice = int.Parse(Console.ReadLine());
