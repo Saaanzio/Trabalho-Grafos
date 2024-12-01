@@ -9,6 +9,10 @@ namespace TrabalhoGrafos
 {
     internal class Program
     {
+        /// <summary>
+        /// Metodo main que inicia a aplicação/sistema
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             try
@@ -23,22 +27,25 @@ namespace TrabalhoGrafos
             
         }
 
+        /// <summary>
+        /// Start para criar o grafo
+        /// </summary>
         public static void start()
         {
-            int codigo;
+            int codigoEscolha;
             do
             {
                 try
                 {
                     Console.WriteLine(menuInicial());
-                    if (!int.TryParse(Console.ReadLine(), out codigo))
+                    if (!int.TryParse(Console.ReadLine(), out codigoEscolha))
                     {
                         Console.Clear();
                         Console.WriteLine("Por favor, insira um número válido.");
                         continue;
                     }
                     Console.Clear();
-                    switch (codigo)
+                    switch (codigoEscolha)
                     {
                         case 1:
                             criarGrafo();
@@ -55,22 +62,29 @@ namespace TrabalhoGrafos
                 {
                     Console.Clear();
                     Console.WriteLine("Opção inválida!");
-                    codigo = -1;
+                    codigoEscolha = -1;
                 }
-            } while (codigo != 0);
+            } while (codigoEscolha != 0);
         }
 
+        /// <summary>
+        /// Menu inicial para crair grafo
+        /// </summary>
+        /// <returns>Retorna um stringbuilder com o menu inicial</returns>
         public static string menuInicial()
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("Bem vindo ao sistema de Grafos!");
-            stringBuilder.AppendLine("1) Criar grafo");
-            stringBuilder.AppendLine("0) Sair");
-            return stringBuilder.ToString();
+            StringBuilder construtorMenu = new StringBuilder();
+            construtorMenu.AppendLine("Bem vindo ao sistema de Grafos!");
+            construtorMenu.AppendLine("1) Criar grafo");
+            construtorMenu.AppendLine("0) Sair");
+            return construtorMenu.ToString();
         }
 
 
-
+        /// <summary>
+        /// Após escolher criar o grafo, o usuário informa os detalhes para criar o grafo
+        /// (numero de vertices, numero de arestas,peso das arestas)
+        /// </summary>
         public static void criarGrafo() 
         {
             try
@@ -112,12 +126,24 @@ namespace TrabalhoGrafos
             }
         }
 
+        /// <summary>
+        /// Metodo de calcular densidade do grafo
+        /// </summary>
+        /// <param name="numVertices">Número de vértices</param>
+        /// <param name="numArestas">Número de arestas</param>
+        /// <returns>Peso do grafo</returns>
         public static double calcularDensidade(int numVertices, int numArestas)
         {
             double densidade = (2 * numArestas) / (numVertices * (numVertices - 1));
             return densidade;
         }
 
+        /// <summary>
+        /// Cria as informações do grafo com base no modelo dimic
+        /// </summary>
+        /// <param name="numVertices">Número de vértices</param>
+        /// <param name="numArestas">Número de arestas</param>
+        /// <returns>Retorna lista com base no modelo dimic</returns>
         public static List<List<int>> criarDimic(int numVertices, int numArestas)
         {
             List<List<int>> dimic = new List<List<int>>();
@@ -162,6 +188,11 @@ namespace TrabalhoGrafos
             return dimic;
         }
 
+
+        /// <summary>
+        /// Menu do grafo
+        /// </summary>
+        /// <param name="grafo">Grafo em forma de lista ou matriz</param>
         public static void menuGrafo(IGrafo grafo)
         {
             bool repetidor = true;
@@ -219,6 +250,11 @@ namespace TrabalhoGrafos
         }
         */
 
+        /// <summary>
+        /// Metodo de adicionar aresta no grafo
+        /// </summary>
+        /// <param name="grafo">Grafo em forma de lista ou matriz</param>
+        /// <returns>Retorna true caso adicionar a aresta tenha sido sucesso</returns>
         public static bool addAresta(IGrafo grafo)
         {
             try
@@ -265,6 +301,10 @@ namespace TrabalhoGrafos
             }
         }
 
+        /// <summary>
+        /// Metodo de listar o grafo
+        /// </summary>
+        /// <param name="grafo">Grafo em forma de lista ou matriz</param>
         public static void listarGrafo(IGrafo grafo)
         {
             try
