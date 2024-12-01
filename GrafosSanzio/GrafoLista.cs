@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrafosSanzio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TrabalhoGrafos
 {
-    class GrafoLista //implements Grafo
+    class GrafoLista : IGrafo
     {
         private List<Aresta>[] listaAdj;
         public GrafoLista(int vertices)
