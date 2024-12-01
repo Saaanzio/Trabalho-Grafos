@@ -11,8 +11,16 @@ namespace TrabalhoGrafos
     {
         static void Main(string[] args)
         {
-            Console.Clear();
-            start();
+            try
+            {
+                Console.Clear();
+                start();
+            }
+            catch (Exception ex) {
+
+                Console.WriteLine($"Erro inesperado: {ex.Message}");
+            }
+            
         }
 
         public static void start()
@@ -23,7 +31,12 @@ namespace TrabalhoGrafos
                 try
                 {
                     Console.WriteLine(menuInicial());
-                    codigo = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out codigo))
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Por favor, insira um número válido.");
+                        continue;
+                    }
                     Console.Clear();
                     switch (codigo)
                     {
@@ -60,29 +73,43 @@ namespace TrabalhoGrafos
 
         public static void criarGrafo() 
         {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            Console.WriteLine("Informe a quantidade de vertices");
-            int numVertices = int.Parse(Console.ReadLine());
-            Console.WriteLine("Informe a quantidade de arestas");
-            int numArestas = int.Parse(Console.ReadLine());
-
-            List<List<int>>  dimic = criarDimic(numVertices, numArestas);
-
-            IGrafo grafo;
-
-            if (calcularDensidade(numVertices, numArestas) >= 0.5)
+            try
             {
-                grafo = new GrafoLista(numVertices, dimic);//GrafoMatriz(numVertices,dimic);
-            }
-            else
-            {
-                grafo = new GrafoLista(numVertices,dimic);
-            }
+                Console.WriteLine("Informe a quantidade de vértices:");
+                if (!int.TryParse(Console.ReadLine(), out int numVertices) || numVertices <= 0)
+                {
+                    Console.WriteLine("Número de vértices inválido.");
+                    return;
+                }
 
-            Console.Clear();
-            Console.WriteLine("Grafo criado :D");
-            menuGrafo(grafo);
+                Console.WriteLine("Informe a quantidade de arestas:");
+                if (!int.TryParse(Console.ReadLine(), out int numArestas) || numArestas < 0)
+                {
+                    Console.WriteLine("Número de arestas inválido.");
+                    return;
+                }
+
+                List<List<int>> dimic = criarDimic(numVertices, numArestas);
+
+                IGrafo grafo;
+
+                if (calcularDensidade(numVertices, numArestas) >= 0.5)
+                {
+                    grafo = new GrafoMatriz(numVertices, dimic);
+                }
+                else
+                {
+                    grafo = new GrafoLista(numVertices, dimic);
+                }
+
+                Console.Clear();
+                Console.WriteLine("Grafo criado :D");
+                menuGrafo(grafo);
+            }
+            catch (Exception ex) {
+
+                Console.WriteLine($"Erro ao criar grafo: {ex.Message}");
+            }
         }
 
         public static double calcularDensidade(int numVertices, int numArestas)
@@ -97,17 +124,39 @@ namespace TrabalhoGrafos
 
             for (int i = 1; i <= numArestas; i++)
             {
-                Console.WriteLine($"Informe o vértice de origem da aresta {i}:");
-                int verticeOrigem = int.Parse(Console.ReadLine());
+                try
+                {
+                    Console.WriteLine($"Informe o vértice de origem da aresta {i}:");
+                    if (!int.TryParse(Console.ReadLine(), out int verticeOrigem) || verticeOrigem < 0 || verticeOrigem >= numVertices)
+                    {
+                        Console.WriteLine("Vértice de origem inválido.");
+                        i--;
+                        continue;
+                    }
 
-                Console.WriteLine($"Informe o vértice de destino da aresta {i}:");
-                int verticeDestino = int.Parse(Console.ReadLine());
+                    Console.WriteLine($"Informe o vértice de destino da aresta {i}:");
+                    if (!int.TryParse(Console.ReadLine(), out int verticeDestino) || verticeDestino < 0 || verticeDestino >= numVertices)
+                    {
+                        Console.WriteLine("Vértice de destino inválido.");
+                        i--;
+                        continue;
+                    }
 
-                Console.WriteLine($"Informe o peso da aresta {i}:");
-                int peso = int.Parse(Console.ReadLine());
+                    Console.WriteLine($"Informe o peso da aresta {i}:");
+                    if (!int.TryParse(Console.ReadLine(), out int peso) || peso < 0)
+                    {
+                        Console.WriteLine("Peso inválido.");
+                        i--;
+                        continue;
+                    }
 
-
-                dimic.Add(new List<int> { verticeOrigem, verticeDestino, peso });
+                    dimic.Add(new List<int> { verticeOrigem, verticeDestino, peso });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao processar a aresta {i}: {ex.Message}");
+                    i--;
+                }
             }
 
             return dimic;
@@ -172,31 +221,60 @@ namespace TrabalhoGrafos
 
         public static bool addAresta(IGrafo grafo)
         {
-            Console.WriteLine("Insira o número do vertice de origem");
-            int verticeOrigem = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Insira o número do vertice de destino");
-            int verticeDestino = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Insira o peso da aresta");
-            int peso = int.Parse(Console.ReadLine());
-
-            if (grafo.AdicionarAresta(verticeOrigem, verticeDestino, peso)){ 
-                Console.Clear();
-                Console.WriteLine("Aresta adicionada com sucesso");
-            }
-            else
+            try
             {
-                Console.Clear();
-                Console.WriteLine("Um ou os dois vértices não existem");
+                Console.WriteLine("Insira o número do vértice de origem:");
+                if (!int.TryParse(Console.ReadLine(), out int verticeOrigem))
+                {
+                    Console.WriteLine("Vértice de origem inválido.");
+                    return false;
+                }
+
+                Console.WriteLine("Insira o número do vértice de destino:");
+                if (!int.TryParse(Console.ReadLine(), out int verticeDestino))
+                {
+                    Console.WriteLine("Vértice de destino inválido.");
+                    return false;
+                }
+
+                Console.WriteLine("Insira o peso da aresta:");
+                if (!int.TryParse(Console.ReadLine(), out int peso))
+                {
+                    Console.WriteLine("Peso inválido.");
+                    return false;
+                }
+
+                if (grafo.AdicionarAresta(verticeOrigem, verticeDestino, peso))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Aresta adicionada com sucesso.");
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Erro ao adicionar a aresta. Verifique os vértices.");
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao adicionar aresta: {ex.Message}");
                 return false;
             }
-            return true;
         }
 
         public static void listarGrafo(IGrafo grafo)
         {
-            Console.WriteLine(grafo.ToString());
+            try
+            {
+                Console.WriteLine(grafo.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao listar o grafo: {ex.Message}");
+            }
         }
 
     }
