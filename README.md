@@ -10,3 +10,7 @@ Acesso rápido: https://pucminas.instructure.com/courses/204452/assignments/1050
 
 # Arquivo UML
 [Clique aqui para acessar o documento PDF](UMLTrabalhoGrafos.dia)
+
+# Plano do sistema - Main
+
+![image](./PlanoSistema-GrafosTrabalho.png)
