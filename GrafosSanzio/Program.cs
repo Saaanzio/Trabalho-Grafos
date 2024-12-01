@@ -80,7 +80,6 @@ namespace TrabalhoGrafos
             return construtorMenu.ToString();
         }
 
-
         /// <summary>
         /// Após escolher criar o grafo, o usuário informa os detalhes para criar o grafo
         /// (numero de vertices, numero de arestas,peso das arestas)
@@ -187,7 +186,6 @@ namespace TrabalhoGrafos
 
             return dimic;
         }
-
 
         /// <summary>
         /// Menu do grafo
