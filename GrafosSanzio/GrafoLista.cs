@@ -56,5 +56,82 @@ namespace TrabalhoGrafos
             }
             return sb.ToString();
         }
+        public List<Aresta> ArestasAdjacentes(Aresta aresta)
+        {
+            if (aresta.getDestino() <= listaAdj.Length && aresta.getOrigem() > 0)
+            {
+                List<Aresta> adj = new List<Aresta>();
+                adj.AddRange(listaAdj[aresta.getDestino()]);
+                adj.AddRange(listaAdj[aresta.getOrigem()]);
+                return adj;
+            }
+            return null;
+        }
+        public List<Aresta> ArestasIncidentes(int vertice)
+        {
+            if (vertice >= 0 && vertice <= listaAdj.Length)
+            {
+                List<Aresta> adj = new List<Aresta>();
+                adj.AddRange(listaAdj[vertice]);
+                return adj;
+            }
+            return null;
+        }
+        public List<int> VerticesIncidentes(int origem, int destino)
+        {
+            if (origem <= listaAdj.Length && destino > 0)
+            {
+                List<int> adj = new List<int>();
+                adj.Add(origem);
+                adj.Add(destino);
+                return adj;
+            }
+            return null;
+        }
+        public int GrauVertice(int vertice)
+        {
+            if (vertice >= 0 && vertice <= listaAdj.Length)
+            {
+                return listaAdj[vertice].Count();
+            }
+            return 0;
+        }
+        public bool VerificarVizinhos(int vertice, int vertice2)
+        {
+            if ((vertice >= 0 && vertice <= listaAdj.Length) && (vertice >= 0 && vertice <= listaAdj.Length))
+            {
+                return listaAdj[vertice].Any(l => l.getDestino() == vertice2) || listaAdj[vertice2].Any(l => l.getDestino() == vertice)
+            }
+            return false;
+        }
+        public bool TrocarPeso(int origem, int destino, int peso)
+        {
+            if (destino <= listaAdj.Length && origem >= listaAdj.Length)
+            {
+                listaAdj[origem].ForEach(a =>
+                {
+                    if (a.getDestino() == destino)
+                    {
+                        a.setPeso(peso);
+                    }
+                });
+                return true;
+            }
+            return false;
+        }
+        public bool TrocarAdjacencias(int vertice, int vertice2)
+        {
+            if ((vertice >= 0 && vertice <= listaAdj.Length) && (vertice >= 0 && vertice <= listaAdj.Length))
+            {
+                List<Aresta> aux = new List<Aresta>();
+                aux = listaAdj[vertice];
+                listaAdj[vertice] = listaAdj[vertice2];
+                listaAdj[vertice].ForEach(a => a.setOrigem(vertice));
+                listaAdj[vertice2] = listaAdj[vertice];
+                listaAdj[vertice2].ForEach(a => a.setOrigem(vertice2));
+                return true;
+            }
+            return false;
+        }
     }
 }
